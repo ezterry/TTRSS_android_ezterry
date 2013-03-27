@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.fox.ttrss"
+    package="name.devnull.ttrss"
     android:versionCode="150"
     android:versionName="1.4.2" >
 
@@ -187,9 +187,6 @@
             android:name=".util.ImageCacheService"
             android:enabled="true" />
 
-        <meta-data
-            android:name="com.google.android.backup.api_key"
-            android:value="AEdPqrEAAAAIwG6zsGB4qo6ZhjfwIJpm9WI7AqmWaoRXm6ZJnA" />
     </application>
 
 </manifest>
