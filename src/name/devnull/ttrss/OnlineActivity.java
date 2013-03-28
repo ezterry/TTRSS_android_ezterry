@@ -396,7 +396,7 @@ public class OnlineActivity extends CommonActivity {
 	}
 	
 	public void login(boolean refresh) {
-		if (m_prefs.getString("ttrss_url", "").trim().length() == 0) {
+		if (m_prefs.getString("login", "").trim().length() == 0) {
 
 			setLoadingStatus(R.string.login_need_configure, false);
 

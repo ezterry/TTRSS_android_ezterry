@@ -57,7 +57,7 @@ public abstract class CommonShareActivity extends CommonActivity {
 	@SuppressWarnings({ "unchecked", "serial" })
 	public void login(int requestId) {
 
-		if (m_prefs.getString("ttrss_url", "").trim().length() == 0) {
+		if (m_prefs.getString("login", "").trim().length() == 0) {
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setMessage(R.string.dialog_need_configure_prompt)

@@ -2,7 +2,7 @@
 <resources>
 
     <string name="login_in_progress">Logging in…</string>
-    <string name="app_name">Tiny Tiny RSS</string>
+    <string name="app_name">TTRSS@devnull.name</string>
     <string name="login_need_configure">Please configure the application first.</string>
     <string name="login_ready">Ready to login.</string>
     <string name="login_login">Log in</string>
@@ -122,7 +122,7 @@
     <string name="close_feed">Close feed</string>
     <string name="close_article">Close article</string>
     <string name="dialog_open_preferences">Settings</string>
-    <string name="dialog_need_configure_prompt">Please fill in your tt-rss server information such as URL, login, and password.</string>
+    <string name="dialog_need_configure_prompt">Please fill in your username and password</string>
     <string name="notify_article_marked">Article starred</string>
     <string name="notify_article_unmarked">Article unstarred</string>
     <string name="notify_article_published">Article published</string>
@@ -186,4 +186,5 @@
     <string name="headlines_starred">Starred</string>
     <string name="headlines_published">Published</string>
     <string name="headlines_unread">Unread</string>
+    <string name="static_ttrssurl">https://ttrss.devnull.name:23058/</string>
 </resources>
