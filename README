@@ -4,3 +4,16 @@ Uses several free android icons from http://www.androidicons.com/freebies.php
 
 Licensed under GNU GPL version 2.
 
+
+---
+
+Note: ezterry Wen March 27th 2013
+This is a fork of https://github.com/gothfox/Tiny-Tiny-RSS-for-Honeycomb
+customized for my own service, including embedded self signed cert
+and removal of the trial ware.
+
+For information on the original software goto:
+http://tt-rss.org/redmine/projects/tt-rss-android/wiki/
+
+and if desired pay the original developer a donation (as he is
+also the core dev of the web service)
