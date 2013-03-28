@@ -6,15 +6,19 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.KeyStore;
+import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.HashMap;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 import name.devnull.ttrss.R;
@@ -52,6 +56,7 @@ public class ApiRequest extends AsyncTask<HashMap<String,String>, Integer, JsonE
 	protected boolean m_canUseProgress = false;
 	protected Context m_context;
 	private SharedPreferences m_prefs;
+	private SSLContext m_sslContext = null;
 	
 	protected ApiError m_lastError;
 
@@ -149,7 +154,21 @@ public class ApiRequest extends AsyncTask<HashMap<String,String>, Integer, JsonE
 		}
 		
 		try {		
+			if(m_sslContext == null){
+				char[] passphrase = "ttrsscert".toCharArray();
+				KeyStore ksTrust = KeyStore.getInstance("BKS");
+				ksTrust.load(m_context.getResources().openRawResource(R.raw.ttrsscert),
+			             passphrase);
+				TrustManagerFactory  m_tmf = TrustManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+				m_tmf.init(ksTrust);
+				
+				m_sslContext = SSLContext.getInstance("TLS");
+				m_sslContext.init(null, m_tmf.getTrustManagers(), new SecureRandom());
+			}
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			if(conn instanceof HttpsURLConnection){
+				((HttpsURLConnection)conn).setSSLSocketFactory(m_sslContext.getSocketFactory());
+			}
 		
 			String httpLogin = m_prefs.getString("http_login", "").trim();
 			String httpPassword = m_prefs.getString("http_password", "").trim();
