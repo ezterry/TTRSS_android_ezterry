@@ -38,9 +38,10 @@ import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.widget.TextView;
 
-@SuppressLint("ValidFragment")
+
+@SuppressLint({ "ValidFragment", "SimpleDateFormat" })
 public class ArticleFragment extends Fragment implements GestureDetector.OnDoubleTapListener {
-	private final String TAG = this.getClass().getSimpleName();
+	//private final String TAG = this.getClass().getSimpleName();
 
 	private SharedPreferences m_prefs;
 	private Article m_article;
@@ -155,7 +156,6 @@ public class ArticleFragment extends Fragment implements GestureDetector.OnDoubl
 	                	}
 	                }
 				});
-				
 				web.setOnTouchListener(new View.OnTouchListener() {
 					@Override
 					public boolean onTouch(View v, MotionEvent event) {
@@ -220,6 +220,9 @@ public class ArticleFragment extends Fragment implements GestureDetector.OnDoubl
 					break;		
 				}
 				
+				//fix for feeds without a proto in images (such as google news
+				articleContent = articleContent.replaceAll("src\\=\\\"\\/\\/", "src=\"https://");
+				
 				content = 
 					"<html>" +
 					"<head>" +
@@ -244,7 +247,6 @@ public class ArticleFragment extends Fragment implements GestureDetector.OnDoubl
 									
 									URL url = new URL(a.content_url.trim());
 									String strUrl = url.toString().trim();
-
 									content += "<p><img src=\"" + strUrl.replace("\"", "\\\"") + "\"></p>";
 								}
 
