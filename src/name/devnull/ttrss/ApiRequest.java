@@ -8,20 +8,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.KeyStore;
 import java.security.SecureRandom;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.HashMap;
 
-import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
-import javax.net.ssl.X509TrustManager;
 
 import name.devnull.ttrss.R;
+import name.devnull.ttrss.util.CustomCertTrustManager;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -159,14 +153,16 @@ public class ApiRequest extends AsyncTask<HashMap<String,String>, Integer, JsonE
 				KeyStore ksTrust = KeyStore.getInstance("BKS");
 				ksTrust.load(m_context.getResources().openRawResource(R.raw.ttrsscert),
 			             passphrase);
-				TrustManagerFactory  m_tmf = TrustManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
-				m_tmf.init(ksTrust);
+
+				CustomCertTrustManager certTrust = new CustomCertTrustManager(ksTrust);
 				
 				m_sslContext = SSLContext.getInstance("TLS");
-				m_sslContext.init(null, m_tmf.getTrustManagers(), new SecureRandom());
+				m_sslContext.init(null, new TrustManager[] { certTrust }, new SecureRandom());
+				HttpsURLConnection.setDefaultSSLSocketFactory(m_sslContext.getSocketFactory());
 			}
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			if(conn instanceof HttpsURLConnection){
+				//ought to be redundant
 				((HttpsURLConnection)conn).setSSLSocketFactory(m_sslContext.getSocketFactory());
 			}
 		
@@ -288,55 +284,6 @@ public class ApiRequest extends AsyncTask<HashMap<String,String>, Integer, JsonE
 		}
 		
 		return null;
-	}
-	
-	protected static void trustAllHosts(boolean trustAnyCert, boolean trustAnyHost) {
-	    try {
-	    	if (trustAnyCert) {
-	    	    X509TrustManager easyTrustManager = new X509TrustManager() {
-
-	    	        public void checkClientTrusted(
-	    	        		X509Certificate[] chain,
-	    	                String authType) throws CertificateException {
-	    	            // Oh, I am easy!
-	    	        }
-
-	    	        public void checkServerTrusted(
-	    	        		X509Certificate[] chain,
-	    	                String authType) throws CertificateException {
-	    	            // Oh, I am easy!
-	    	        }
-
-	    	        public X509Certificate[] getAcceptedIssuers() {
-	    	            return null;
-	    	        }
-
-	    	    };
-
-	    	    // Create a trust manager that does not validate certificate chains
-	    	    TrustManager[] trustAllCerts = new TrustManager[] {easyTrustManager};
-
-	    	    // Install the all-trusting trust manager
-
-	    		SSLContext sc = SSLContext.getInstance("TLS");
-
-	    		sc.init(null, trustAllCerts, new java.security.SecureRandom());
-
-	    		HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-	    	}
-	    	
-	    	if (trustAnyHost) {
-	    		HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {				
-	    			@Override
-	    			public boolean verify(String hostname, SSLSession session) {
-	    				return true;
-	    			}
-	    		});
-	    	}
-
-	    } catch (Exception e) {
-	            e.printStackTrace();
-	    }
 	}
 	
 	@SuppressWarnings("deprecation")

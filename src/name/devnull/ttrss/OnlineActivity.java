@@ -28,8 +28,6 @@ import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -1017,10 +1015,7 @@ public class OnlineActivity extends CommonActivity {
 	
 	@Override
 	public void onResume() {
-		super.onResume();
-		
-		ApiRequest.trustAllHosts(m_prefs.getBoolean("ssl_trust_any", false),
-				m_prefs.getBoolean("ssl_trust_any_host", false));				
+		super.onResume();				
 		
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(OfflineDownloadService.INTENT_ACTION_SUCCESS);

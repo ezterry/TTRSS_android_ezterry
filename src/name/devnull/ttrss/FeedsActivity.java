@@ -6,7 +6,6 @@ import name.devnull.ttrss.types.Article;
 import name.devnull.ttrss.types.ArticleList;
 import name.devnull.ttrss.types.Feed;
 import name.devnull.ttrss.types.FeedCategory;
-import name.devnull.ttrss.util.AppRater;
 
 import name.devnull.ttrss.R;
 
@@ -116,9 +115,6 @@ public class FeedsActivity extends OnlineActivity implements HeadlinesEventListe
 				} */
 				
 				ft.commit();
-				
-				AppRater.appLaunched(this);
-				checkTrial(true);
 			}
 		} else { // savedInstanceState != null
 			m_actionbarUpEnabled = savedInstanceState.getBoolean("actionbarUpEnabled");
